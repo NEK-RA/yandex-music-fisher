@@ -718,7 +718,7 @@ async function loadPopup() {
         let label;
 
         try {
-            label = await background.fisher.yandex.getLabel(page.labelId);
+            label = await background.fisher.yandex.getLabel(page.labelId, page.page);
         } catch (e) {
             onAjaxFail(e);
             return;
