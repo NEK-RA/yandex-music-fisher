@@ -1,5 +1,8 @@
 const md5 = require('blueimp-md5');
 const options = {
+    headers: {
+        'X-Retpath-Y': encodeURIComponent('https://music.yandex.ru/')
+    },
     redirect: 'error',
     credentials: 'include'
 };
@@ -22,7 +25,7 @@ class Yandex {
     }
 
     async getTrackUrl(trackId) {
-        const trackInfoUrl = `${this.baseUrl}/api/v2.0/handlers/track/${trackId}/download/m?hq=1`;
+        const trackInfoUrl = `${this.baseUrl}/api/v2.1/handlers/track/${trackId}/track/download/m?hq=1`;
         const trackInfo = await parseJsonResponse(await fetch(trackInfoUrl, options));
         const downloadInfo = await parseJsonResponse(await fetch(`${trackInfo.src}&format=json`));
         const salt = 'XGRlBW9FXlekgbPrRHuSiA';
