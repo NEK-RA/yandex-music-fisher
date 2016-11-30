@@ -1,5 +1,4 @@
 const fs = require('fs');
-const os = require('os');
 const path = require('path');
 const JSZip = require('jszip');
 const manifest = require('../src/manifest.json');
@@ -45,15 +44,15 @@ function createManifest() {
         manifest.optional_permissions = ['background'];
         manifest.permissions.push('downloads.shelf');
         manifest.minimum_chrome_version = '49.0';
-        manifest.incognito = 'split';
     }
     if (isOpera) {
         manifest.minimum_opera_version = '36.0';
+    }
+    if (isChromium || isOpera) {
         manifest.incognito = 'split';
     }
 
-    const newManifest = JSON.stringify(manifest, null, 2).replace(/[\n]/g, os.EOL) + os.EOL;
-    fs.writeFileSync(path.join(distFolder, 'manifest.json'), newManifest);
+    fs.writeFileSync(path.join(distFolder, 'manifest.json'), JSON.stringify(manifest));
     console.log(`manifest.json was written in ${distFolder}`);
 }
 
