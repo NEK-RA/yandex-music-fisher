@@ -74,8 +74,11 @@ class Yandex {
             .then((json) => json.playlist);
     }
 
-    getLabel(labelId) {
-        const url = `${this.baseUrl}/handlers/label.jsx?sort=year&id=${labelId}`;
+    getLabel(labelId, pageNum) {
+        let url = `${this.baseUrl}/handlers/label.jsx?sort=year&id=${labelId}`;
+        if (pageNum !== undefined) {
+            url += `&page=${pageNum}`;
+        }
 
         return fetch(url, options)
             .then(parseJsonResponse);

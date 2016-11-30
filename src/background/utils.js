@@ -148,6 +148,9 @@ function getUrlInfo(url) {
         } else if (info.isLabel) {
             info.labelId = parts[2];
         }
+        if (urlData.searchParams.has('page')) {
+            info.page = urlData.searchParams.get('page');
+        }
     }
     return info;
 }
