@@ -1,7 +1,5 @@
 /* global fisher */
 
-const qs = require('querystring');
-
 function fetchBuffer(url, onProgress) {
     return new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest();
@@ -150,9 +148,8 @@ function getUrlInfo(url) {
         } else if (info.isLabel) {
             info.labelId = parts[2];
         }
-        var query = qs.parse(urlData.search);
-        if ('page' in query) {
-            info.page = query['page'];
+        if (urlData.searchParams.has('page')) {
+            info.page = urlData.searchParams.get('page');
         }
     }
     return info;

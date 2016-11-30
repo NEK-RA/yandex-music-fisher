@@ -75,8 +75,8 @@ class Yandex {
     }
 
     getLabel(labelId, pageNum) {
-        var url = `${this.baseUrl}/handlers/label.jsx?sort=year&id=${labelId}`;
-        if (pageNum != undefined) {
+        let url = `${this.baseUrl}/handlers/label.jsx?sort=year&id=${labelId}`;
+        if (pageNum !== undefined) {
             url += `&page=${pageNum}`;
         }
 
