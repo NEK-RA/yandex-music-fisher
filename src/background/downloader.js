@@ -1,4 +1,4 @@
-/* global fisher, ga */
+/* global fisher */
 
 const ID3Writer = require('browser-id3-writer');
 
@@ -196,7 +196,6 @@ downloader.download = async() => {
 };
 
 downloader.downloadTrack = (trackId, albumId, folder) => {
-    ga('send', 'event', 'track', trackId);
     fisher.yandex.getTrack(trackId, albumId).then((json) => {
         const track = json.track;
 
@@ -239,7 +238,6 @@ downloader.downloadTrack = (trackId, albumId, folder) => {
 };
 
 downloader.downloadAlbum = (albumId, folder) => {
-    ga('send', 'event', 'album', albumId);
     fisher.yandex.getAlbum(albumId).then((album) => {
         if (!album.trackCount) {
             return;
@@ -349,7 +347,6 @@ downloader.downloadAlbum = (albumId, folder) => {
 };
 
 downloader.downloadPlaylist = (username, playlistId) => {
-    ga('send', 'event', 'playlist', username, playlistId);
     fisher.yandex.getPlaylist(username, playlistId).then((playlist) => {
         if (!playlist.trackCount) {
             return;

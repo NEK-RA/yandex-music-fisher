@@ -1,12 +1,7 @@
-/* global ga */
-
-require('../vendor/ga');
-
 const utils = require('./utils');
 const Yandex = require('./yandex');
 const storage = require('./storage');
 const downloader = require('./downloader');
-const version = chrome.runtime.getManifest().version;
 const fisher = {
     utils,
     yandex: new Yandex(),
@@ -16,24 +11,9 @@ const fisher = {
 
 window.fisher = fisher;
 
-ga('create', 'UA-65530110-1', 'auto');
-ga('set', 'checkProtocolTask', null); // разрешает протокол "chrome-extension"
-ga('set', 'page', '/home');
-ga('send', 'event', 'load', version);
-
 chrome.browserAction.setBadgeBackgroundColor({
     color: [100, 100, 100, 255]
 });
-
-if (!PLATFORM_FIREFOX) {
-    chrome.runtime.onInstalled.addListener((details) => { // установка или обновление расширения
-        if (details.reason === 'install') {
-            ga('send', 'event', 'install', version);
-        } else if (details.reason === 'update' && details.previousVersion !== version) {
-            ga('send', 'event', 'update', `${details.previousVersion} > ${version}`);
-        }
-    });
-}
 
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => { // изменение URL
     fisher.utils.updateTabIcon(tab);
