@@ -735,4 +735,9 @@ async function loadPopup() {
     }
 }
 
+if (PLATFORM_FIREFOX) {
+    const container = document.getElementsByClassName('container')[0];
+    container.style.marginRight = '17px';
+}
+
 loadPopup();

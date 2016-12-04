@@ -1,6 +1,4 @@
 body {
-    width: 37em;
-    padding: 18px;
     font-size: 12px;
 }
 
@@ -15,6 +13,11 @@ input[type=checkbox] {
 h4.albums, h4.compilations {
     margin-bottom: 18px;
     margin-left: 10px;
+}
+
+.container {
+    width: 36em;
+    padding: 15px;
 }
 
 .btn, .btn:active, .btn:hover {
