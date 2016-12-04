@@ -75,25 +75,12 @@ h4.albums, h4.compilations {
     margin: 25px auto;
 }
 
-#compilations {
+#compilations, #albums {
     margin-top: 50px;
-}
-
-#startDownloadBtn {
-    display: inline-block;
-}
-
-#downloadTopTracks {
-    display: block;
-    margin: 18px auto;
 }
 
 #numOfTopTracks {
     width: 45px;
-}
-
-#albums {
-    margin-top: 18px;
 }
 
 .panel-albums .media,
