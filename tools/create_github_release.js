@@ -5,6 +5,27 @@ const path = require('path');
 const UriTemplate = require('uritemplate');
 const tokens = require('./tokens.json');
 const pack = require('../package.json');
+const bodyTemplate = `### Для всех браузеров
+
+- 
+
+### Chrome
+
+- 
+
+### Opera
+
+-  
+
+### Firefox
+
+- 
+
+## Установка
+
+- [Интернет-магазин Chrome](https://chrome.google.com/webstore/detail/yandex-music-fisher/gkdpmbjlfgjbnleinnojgpgoljaokbni)
+- [Дополнения к Opera](https://addons.opera.com/ru/extensions/details/yandex-music-fisher/)
+`;
 
 let uploadUrlTemplate;
 
@@ -44,9 +65,9 @@ function createGithubRelease() {
     const releasesUrl = 'https://api.github.com/repos/egoroof/yandex-music-fisher/releases';
     const data = JSON.stringify({
         tag_name: `v${pack.version}`,
-        target_commitish: 'master',
         name: pack.version,
-        draft: true
+        draft: true,
+        body: bodyTemplate
     });
 
     return post(releasesUrl, 'application/json', data);
@@ -66,9 +87,11 @@ createGithubRelease()
         uploadUrlTemplate = UriTemplate.parse(response.upload_url);
     })
     .then(() => uploadGithubAsset('chromium'))
+    .then(() => console.log('Chromium asset was downloaded'))
     .then(() => uploadGithubAsset('firefox'))
+    .then(() => console.log('Firefox asset was downloaded'))
     .then(() => uploadGithubAsset('opera'))
-    .then(() => console.log('All assets were downloaded'))
+    .then(() => console.log('Opera asset was downloaded'))
     .catch((e) => {
         console.error(e);
         process.exit(1);
