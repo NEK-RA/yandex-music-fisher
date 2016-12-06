@@ -12,10 +12,8 @@
 
 ### Установка
 
-Chrome, Яндекс.Браузер:
-[Интернет-магазин Chrome](https://chrome.google.com/webstore/detail/yandex-music-fisher/gkdpmbjlfgjbnleinnojgpgoljaokbni)
-
-Opera: [Дополнения к Opera](https://addons.opera.com/ru/extensions/details/yandex-music-fisher/)
+- [Интернет-магазин Chrome](https://chrome.google.com/webstore/detail/yandex-music-fisher/gkdpmbjlfgjbnleinnojgpgoljaokbni)
+- [Дополнения к Opera](https://addons.opera.com/ru/extensions/details/yandex-music-fisher/)
 
 ### Как пользоваться
 
