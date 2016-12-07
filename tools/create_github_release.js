@@ -25,6 +25,7 @@ const bodyTemplate = `### Для всех браузеров
 
 - [Интернет-магазин Chrome](https://chrome.google.com/webstore/detail/yandex-music-fisher/gkdpmbjlfgjbnleinnojgpgoljaokbni)
 - [Дополнения к Opera](https://addons.opera.com/ru/extensions/details/yandex-music-fisher/)
+- [Дополнения Firefox](https://addons.mozilla.org/ru/firefox/addon/yandex-music-fisher/)
 `;
 
 let uploadUrlTemplate;
