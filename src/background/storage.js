@@ -1,4 +1,4 @@
-class storage {
+export default class storage {
     static get defaults() {
         return {
             downloadThreadCount: 4,
@@ -27,5 +27,3 @@ class storage {
         localStorage.clear();
     }
 }
-
-module.exports = storage;

@@ -1,4 +1,5 @@
-const md5 = require('blueimp-md5');
+import md5 from 'blueimp-md5';
+
 const options = {
     headers: {
         'X-Retpath-Y': encodeURIComponent('https://music.yandex.ru/')
@@ -14,7 +15,7 @@ function parseJsonResponse(response) {
     return response.json();
 }
 
-class Yandex {
+export default class Yandex {
 
     constructor() {
         this.domain = 'ru'; // ru, ua, kz, by
@@ -84,5 +85,3 @@ class Yandex {
             .then(parseJsonResponse);
     }
 }
-
-module.exports = Yandex;

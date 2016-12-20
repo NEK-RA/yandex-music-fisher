@@ -3,12 +3,7 @@ const path = require('path');
 const JSZip = require('jszip');
 const manifest = require('../src/manifest.json');
 const pack = require('../package.json');
-
-const isOpera = process.argv[2] === '--opera';
-const isFirefox = process.argv[2] === '--firefox';
-const isChromium = !isFirefox && !isOpera;
-
-const platform = (isFirefox) ? 'firefox' : (isOpera) ? 'opera' : 'chromium';
+const platform = process.argv[2]; // chromium, opera, firefox
 const distFolder = path.join(path.dirname(__dirname), 'dist', platform);
 
 function readDirSync(dir, filelist) {
@@ -32,7 +27,7 @@ function readDirSync(dir, filelist) {
 
 function createManifest() {
     manifest.version = pack.version;
-    if (isFirefox) {
+    if (platform === 'firefox') {
         manifest.applications = {
             gecko: {
                 id: 'yandex-music-fisher@egoroof.ru',
@@ -40,15 +35,14 @@ function createManifest() {
             }
         };
     }
-    if (isChromium) {
+    if (platform === 'chromium') {
         manifest.optional_permissions = ['background'];
         manifest.permissions.push('downloads.shelf');
         manifest.minimum_chrome_version = '51.0';
+        manifest.incognito = 'split';
     }
-    if (isOpera) {
+    if (platform === 'opera') {
         manifest.minimum_opera_version = '38.0';
-    }
-    if (isChromium || isOpera) {
         manifest.incognito = 'split';
     }
 

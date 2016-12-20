@@ -1,6 +1,6 @@
 /* global fisher */
 
-function fetchBuffer(url, onProgress) {
+export function fetchBuffer(url, onProgress) {
     return new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest();
 
@@ -25,7 +25,7 @@ function fetchBuffer(url, onProgress) {
     });
 }
 
-function bytesToStr(bytes) {
+export function bytesToStr(bytes) {
     const KiB = 1024;
     const MiB = 1024 * KiB;
     const GiB = 1024 * MiB;
@@ -37,7 +37,7 @@ function bytesToStr(bytes) {
     }
 }
 
-function addExtraZeros(val, max) {
+export function addExtraZeros(val, max) {
     const valLength = val.toString().length;
     const maxLength = max.toString().length;
     const diff = maxLength - valLength;
@@ -50,7 +50,7 @@ function addExtraZeros(val, max) {
     return zeros + val.toString();
 }
 
-function durationToStr(duration) {
+export function durationToStr(duration) {
     let seconds = Math.floor(duration);
     let minutes = Math.floor(seconds / 60);
 
@@ -61,7 +61,7 @@ function durationToStr(duration) {
     return `${hours}:${addExtraZeros(minutes, 10)}:${addExtraZeros(seconds, 10)}`;
 }
 
-function clearPath(path, isDir = false) {
+export function clearPath(path, isDir = false) {
     const unsafeChars = /[\u0000-\u001f\u007f-\u009f\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200b-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g;
 
     let p = path.replace(/^\./, '_'); // первый символ - точка (https://music.yandex.ru/album/2289231/track/20208868)
@@ -78,7 +78,7 @@ function clearPath(path, isDir = false) {
     return p;
 }
 
-function parseArtists(allArtists) {
+export function parseArtists(allArtists) {
     const VA = 'Various Artists'; // пример https://music.yandex.ru/album/718010/track/6570232
     const UA = 'Unknown Artist'; // пример https://music.yandex.ru/album/533785/track/4790215
     const composers = [];
@@ -104,7 +104,7 @@ function parseArtists(allArtists) {
     return {artists, composers};
 }
 
-function getUrlInfo(url) {
+export function getUrlInfo(url) {
     const info = {
         isMusic: false,
         isRadio: false,
@@ -155,7 +155,7 @@ function getUrlInfo(url) {
     return info;
 }
 
-function updateTabIcon(tab) {
+export function updateTabIcon(tab) {
     const page = getUrlInfo(tab.url);
 
     let icon = 'black';
@@ -175,7 +175,7 @@ function updateTabIcon(tab) {
     });
 }
 
-function getActiveTab() {
+export function getActiveTab() {
     return new Promise((resolve, reject) => {
         chrome.tabs.query({
             active: true,
@@ -190,23 +190,10 @@ function getActiveTab() {
     });
 }
 
-function updateBadge() {
+export function updateBadge() {
     const count = window.fisher.downloader.getDownloadCount();
 
     chrome.browserAction.setBadgeText({
         text: (count) ? count.toString() : ''
     });
 }
-
-module.exports = {
-    fetchBuffer,
-    bytesToStr,
-    addExtraZeros,
-    durationToStr,
-    clearPath,
-    parseArtists,
-    getUrlInfo,
-    updateTabIcon,
-    getActiveTab,
-    updateBadge
-};

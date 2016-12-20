@@ -1,7 +1,8 @@
-const utils = require('./utils');
-const Yandex = require('./yandex');
-const storage = require('./storage');
-const downloader = require('./downloader');
+import * as utils from './utils';
+import Yandex from './yandex';
+import storage from './storage';
+import downloader from './downloader';
+
 const fisher = {
     utils,
     yandex: new Yandex(),

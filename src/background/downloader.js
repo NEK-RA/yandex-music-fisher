@@ -1,6 +1,6 @@
 /* global fisher */
 
-const ID3Writer = require('browser-id3-writer');
+import ID3Writer from 'browser-id3-writer';
 
 const downloader = {
     TYPE: Object.freeze({
@@ -501,4 +501,4 @@ downloader.getEntityByBrowserDownloadId = (browserDownloadId) => {
     return foundEntity;
 };
 
-module.exports = downloader;
+export default downloader;
