@@ -3,10 +3,10 @@ const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = function (env) {
-    const distFolder = path.join(__dirname, 'dist', env.platform);
+    const distFolder = path.join(path.dirname(__dirname), 'dist', env.platform);
 
     return {
-        context: path.join(__dirname, 'src'),
+        context: path.join(path.dirname(__dirname), 'src'),
         entry: {
             background: './background/background.js',
             content: './content.js',
