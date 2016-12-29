@@ -114,11 +114,18 @@ downloader.download = async() => {
             writer.setFrame('TCOM', artists.composers);
         }
         if ('lyrics' in entity && typeof entity.lyrics === 'string') {
-            writer.setFrame('USLT', entity.lyrics);
+            writer.setFrame('USLT', {
+                description: '',
+                lyrics: entity.lyrics
+            });
         }
         if (coverBuffer) {
             try {
-                writer.setFrame('APIC', coverBuffer);
+                writer.setFrame('APIC', {
+                    type: 3,
+                    data: coverBuffer,
+                    description: ''
+                });
             } catch (e) {
                 // пример https://music.yandex.ru/album/99853/track/879704 при обложке 200х200
                 console.error(e, entity);
