@@ -1,6 +1,7 @@
-# Yandex Music Fisher
+# Yandex Music Fisher [![Travis][build-badge]][build]
 
-[![Travis](https://img.shields.io/travis/egoroof/yandex-music-fisher.svg?style=flat-square)](https://travis-ci.org/egoroof/yandex-music-fisher)
+[build-badge]: https://img.shields.io/travis/egoroof/yandex-music-fisher.svg?style=flat-square
+[build]: https://travis-ci.org/egoroof/yandex-music-fisher
 
 Расширение браузера для скачивания музыки с сервисов [Яндекс.Музыка](https://music.yandex.ru/)
 и [Яндекс.Радио](https://radio.yandex.ru/).
