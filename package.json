@@ -7,14 +7,14 @@
     "build:chromium": "webpack --config tools/webpack.config.js --env.platform=chromium && node tools/post_build.js chromium",
     "build:firefox": "webpack --config tools/webpack.config.js --env.platform=firefox && node tools/post_build.js firefox",
     "build:opera": "webpack --config tools/webpack.config.js --env.platform=opera && node tools/post_build.js opera",
-    "test": "eslint -c tools/.eslintrc.js --ignore-pattern src/vendor/**/*.js src/**/*.js",
     "build:edge": "webpack --config tools/webpack.config.js --env.platform=edge && node tools/post_build.js edge",
+    "test": "eslint -c tools/.eslintrc.js src",
     "preversion": "npm test",
     "version": "npm run build && npm run create-github-release && git add package.json",
     "postversion": "git push && git push --tags",
-    "create-github-release": "node tools/create_github_release.js",
-    "show-download-stats": "node tools/show_download_stats.js",
-    "cover-sizes": "node tools/cover_sizes.js"
+    "create-github-release": "node tools/create_github_release",
+    "show-download-stats": "node tools/show_download_stats",
+    "cover-sizes": "node tools/cover_sizes"
   },
   "devDependencies": {
     "blueimp-md5": "^2.7.0",
