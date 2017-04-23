@@ -31,18 +31,18 @@ function createManifest() {
         manifest.applications = {
             gecko: {
                 id: 'yandex-music-fisher@egoroof.ru',
-                strict_min_version: '51.0'
+                strict_min_version: '52.0'
             }
         };
     }
     if (platform === 'chromium') {
         manifest.optional_permissions = ['background'];
         manifest.permissions.push('downloads.shelf');
-        manifest.minimum_chrome_version = '51.0';
+        manifest.minimum_chrome_version = '55.0';
         manifest.incognito = 'split';
     }
     if (platform === 'opera') {
-        manifest.minimum_opera_version = '38.0';
+        manifest.minimum_opera_version = '42.0';
         manifest.incognito = 'split';
     }
 

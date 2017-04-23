@@ -2,7 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
-module.exports = function (env) {
+module.exports = function(env) {
     const distFolder = path.join(path.dirname(__dirname), 'dist', env.platform);
 
     return {
@@ -16,19 +16,6 @@ module.exports = function (env) {
         output: {
             path: path.join(distFolder, 'bundle'),
             filename: '[name].bundle.js'
-        },
-        module: {
-            loaders: [{
-                test: /\.js$/,
-                exclude: /node_modules/,
-                loader: 'babel-loader',
-                query: {
-                    plugins: [
-                        'transform-async-to-generator',
-                        'transform-strict-mode'
-                    ]
-                }
-            }]
         },
         plugins: [
             new CopyWebpackPlugin([{
