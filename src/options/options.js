@@ -1,3 +1,7 @@
+if (PLATFORM_EDGE) {
+    chrome = browser;
+}
+
 const $ = document.getElementById.bind(document);
 const checkboxes = [
     'shouldDownloadCover',

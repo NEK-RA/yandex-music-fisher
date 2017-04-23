@@ -1,5 +1,9 @@
 /* global externalAPI */
 
+if (PLATFORM_EDGE) {
+    chrome = browser;
+}
+
 function injectCode(func, action) {
     const script = document.createElement('script');
 

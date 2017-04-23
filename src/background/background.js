@@ -12,6 +12,10 @@ const fisher = {
 
 window.fisher = fisher;
 
+if (PLATFORM_EDGE) {
+    chrome = browser;
+}
+
 chrome.browserAction.setBadgeBackgroundColor({
     color: [100, 100, 100, 255]
 });

@@ -3,11 +3,12 @@
   "version": "2.1.0",
   "private": true,
   "scripts": {
-    "build": "npm run build:chromium && npm run build:firefox && npm run build:opera",
+    "build": "npm run build:chromium && npm run build:firefox && npm run build:opera && npm run build:edge",
     "build:chromium": "webpack --config tools/webpack.config.js --env.platform=chromium && node tools/post_build.js chromium",
     "build:firefox": "webpack --config tools/webpack.config.js --env.platform=firefox && node tools/post_build.js firefox",
     "build:opera": "webpack --config tools/webpack.config.js --env.platform=opera && node tools/post_build.js opera",
     "test": "eslint -c tools/.eslintrc.js --ignore-pattern src/vendor/**/*.js src/**/*.js",
+    "build:edge": "webpack --config tools/webpack.config.js --env.platform=edge && node tools/post_build.js edge",
     "preversion": "npm test",
     "version": "npm run build && npm run create-github-release && git add package.json",
     "postversion": "git push && git push --tags",

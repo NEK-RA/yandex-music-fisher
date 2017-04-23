@@ -3,7 +3,7 @@ const path = require('path');
 const JSZip = require('jszip');
 const manifest = require('../src/manifest.json');
 const pack = require('../package.json');
-const platform = process.argv[2]; // chromium, opera, firefox
+const platform = process.argv[2]; // chromium, opera, firefox, edge
 const distFolder = path.join(path.dirname(__dirname), 'dist', platform);
 
 function readDirSync(dir, filelist) {
@@ -44,6 +44,10 @@ function createManifest() {
     if (platform === 'opera') {
         manifest.minimum_opera_version = '42.0';
         manifest.incognito = 'split';
+    }
+    if (platform === 'edge') {
+        manifest.author = 'egoroof';
+        // todo min version?
     }
 
     fs.writeFileSync(path.join(distFolder, 'manifest.json'), JSON.stringify(manifest));

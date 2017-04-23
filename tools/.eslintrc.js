@@ -6,14 +6,15 @@ module.exports = {
     "env": {
         "es6": true,
         "browser": true,
-        "commonjs": true,
-        "node": true,
-        "webextensions": true
+        "node": true
     },
     "globals": {
+        "PLATFORM_EDGE": false,
         "PLATFORM_OPERA": false,
         "PLATFORM_FIREFOX": false,
-        "PLATFORM_CHROMIUM": false
+        "PLATFORM_CHROMIUM": false,
+        "browser": false,
+        "chrome": true,
     },
     "extends": "eslint:recommended",
     "rules": { // http://eslint.org/docs/rules/

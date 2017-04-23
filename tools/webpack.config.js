@@ -34,6 +34,7 @@ module.exports = function(env) {
                 ignore: ['*.js']
             }),
             new webpack.DefinePlugin({
+                PLATFORM_EDGE: env.platform === 'edge',
                 PLATFORM_OPERA: env.platform === 'opera',
                 PLATFORM_FIREFOX: env.platform === 'firefox',
                 PLATFORM_CHROMIUM: env.platform === 'chromium'
