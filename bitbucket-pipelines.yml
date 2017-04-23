@@ -1,9 +1,0 @@
-image: node
-
-pipelines:
-  default:
-    - step:
-        script:
-          - npm install
-          - npm test
-          - npm run build
