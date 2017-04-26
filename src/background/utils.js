@@ -1,5 +1,7 @@
 /* global fisher */
 
+import qs from 'querystring';
+
 export function fetchBuffer(url, onProgress) {
     return new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest();
@@ -129,28 +131,30 @@ export function getUrlInfo(url) {
         info.isRadio = true;
         fisher.yandex.domain = radioMatch[1];
     }
-    if (info.isMusic) {
-        info.isPlaylist = Boolean(parts.length === 5 && parts[1] === 'users' && parts[3] === 'playlists');
-        info.isTrack = Boolean(parts.length === 5 && parts[1] === 'album' && parts[3] === 'track');
-        info.isAlbum = Boolean(parts.length === 3 && parts[1] === 'album');
-        info.isArtist = Boolean(parts.length > 2 && parts[1] === 'artist');
-        info.isLabel = Boolean(parts.length > 2 && parts[1] === 'label');
-        if (info.isPlaylist) {
-            info.username = parts[2];
-            info.playlistId = parts[4];
-        } else if (info.isTrack) {
-            info.trackId = parts[4];
-            info.albumId = parts[2];
-        } else if (info.isAlbum) {
-            info.albumId = parts[2];
-        } else if (info.isArtist) {
-            info.artistId = parts[2];
-        } else if (info.isLabel) {
-            info.labelId = parts[2];
-        }
-        if (urlData.searchParams.has('page')) {
-            info.page = urlData.searchParams.get('page');
-        }
+    if (!info.isMusic) {
+        return info;
+    }
+    info.isPlaylist = (parts.length === 5 && parts[1] === 'users' && parts[3] === 'playlists');
+    info.isTrack = (parts.length === 5 && parts[1] === 'album' && parts[3] === 'track');
+    info.isAlbum = (parts.length === 3 && parts[1] === 'album');
+    info.isArtist = (parts.length > 2 && parts[1] === 'artist');
+    info.isLabel = (parts.length > 2 && parts[1] === 'label');
+    if (info.isPlaylist) {
+        info.username = parts[2];
+        info.playlistId = parts[4];
+    } else if (info.isTrack) {
+        info.trackId = parts[4];
+        info.albumId = parts[2];
+    } else if (info.isAlbum) {
+        info.albumId = parts[2];
+    } else if (info.isArtist) {
+        info.artistId = parts[2];
+    } else if (info.isLabel) {
+        info.labelId = parts[2];
+    }
+    const query = qs.parse(urlData.search);
+    if ('page' in query) {
+        info.page = query.page;
     }
     return info;
 }
