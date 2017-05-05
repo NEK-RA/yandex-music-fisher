@@ -1,6 +1,6 @@
 {
   "name": "yandex-music-fisher",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "private": true,
   "scripts": {
     "build": "npm run build:chromium && npm run build:firefox && npm run build:opera && npm run build:edge",
@@ -10,7 +10,7 @@
     "build:edge": "webpack --config tools/webpack.config.js --env.platform=edge && node tools/post_build.js edge",
     "lint": "eslint -c tools/.eslintrc.js src tools",
     "test": "npm run lint && npm run build",
-    "preversion": "npm test",
+    "preversion": "npm run lint",
     "version": "npm run build && npm run create-github-release && git add package.json",
     "postversion": "git push && git push --tags",
     "create-github-release": "node tools/create_github_release",
