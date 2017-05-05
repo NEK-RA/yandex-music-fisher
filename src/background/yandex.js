@@ -25,14 +25,17 @@ export default class Yandex {
         return `https://music.yandex.${this.domain}`;
     }
 
-    async getTrackUrl(trackId) {
+    async getTrackDownloadInfo(trackId) {
         const trackInfoUrl = `${this.baseUrl}/api/v2.1/handlers/track/${trackId}/track/download/m?hq=1`;
         const trackInfo = await parseJsonResponse(await fetch(trackInfoUrl, options));
         const downloadInfo = await parseJsonResponse(await fetch(`${trackInfo.src}&format=json`));
         const salt = 'XGRlBW9FXlekgbPrRHuSiA';
         const hash = md5(salt + downloadInfo.path.substr(1) + downloadInfo.s);
 
-        return `https://${downloadInfo.host}/get-mp3/${hash}/${downloadInfo.ts + downloadInfo.path}`;
+        return {
+            url: `https://${downloadInfo.host}/get-mp3/${hash}/${downloadInfo.ts + downloadInfo.path}`,
+            codec: trackInfo.codec // mp3, aac
+        };
     }
 
     getTrack(trackId, albumId) {

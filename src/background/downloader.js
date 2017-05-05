@@ -29,7 +29,7 @@ downloader.runAllThreads = () => {
     }
 };
 
-downloader.download = async() => {
+downloader.download = async () => {
     fisher.utils.updateBadge();
     if (downloader.activeThreadCount < 0) {
         downloader.activeThreadCount = 0; // выравнивание при сбоях
@@ -70,7 +70,7 @@ downloader.download = async() => {
         }
     }
 
-    function saveTrack(buffer) {
+    function saveTrack(buffer, codec) {
         if (!downloader.downloads.has(entity.index)) { // загрузку отменили
             return;
         }
@@ -138,7 +138,13 @@ downloader.download = async() => {
             savePath = `${fisher.storage.getItem('folder')}/${savePath}`;
         }
 
-        entity.browserDownloadUrl = writer.getURL();
+        if (codec === 'mp3') {
+            entity.browserDownloadUrl = writer.getURL();
+            savePath += '.mp3';
+        } else if (codec === 'aac') {
+            entity.browserDownloadUrl = window.URL.createObjectURL(new Blob([buffer]));
+            savePath += '.m4a';
+        }
         chrome.downloads.download({
             url: entity.browserDownloadUrl,
             filename: savePath,
@@ -164,10 +170,10 @@ downloader.download = async() => {
             }
         }
         try {
-            const trackUrl = await fisher.yandex.getTrackUrl(entity.track.id);
-            const buffer = await fisher.utils.fetchBuffer(trackUrl, onProgress);
+            const downloadInfo = await fisher.yandex.getTrackDownloadInfo(entity.track.id);
+            const buffer = await fisher.utils.fetchBuffer(downloadInfo.url, onProgress);
 
-            saveTrack(buffer);
+            saveTrack(buffer, downloadInfo.codec);
         } catch (e) {
             onInterruptEntity(e.message);
         }
@@ -238,7 +244,7 @@ downloader.downloadTrack = (trackId, albumId, folder) => {
             trackEntity.savePath = `${fisher.utils.clearPath(shortFolder, true)}/`;
         }
 
-        trackEntity.savePath += fisher.utils.clearPath(`${shortArtists} - ${shortTitle}.mp3`);
+        trackEntity.savePath += fisher.utils.clearPath(`${shortArtists} - ${shortTitle}`);
         downloader.downloads.set(trackEntity.index, trackEntity);
         downloader.download();
     }).catch((e) => console.error(e));
@@ -339,7 +345,7 @@ downloader.downloadAlbum = (albumId, folder) => {
                     trackNameCounter[shortTrackTitle] = 1;
                 }
 
-                trackEntity.savePath = savePath + fisher.utils.clearPath(`${shortTrackTitle}.mp3`);
+                trackEntity.savePath = savePath + fisher.utils.clearPath(`${shortTrackTitle}`);
                 albumEntity.tracks.push(trackEntity);
             });
         });
@@ -406,7 +412,7 @@ downloader.downloadPlaylist = (username, playlistId) => {
                 trackNameCounter[name] = 1;
             }
 
-            trackEntity.savePath = savePath + fisher.utils.clearPath(`${name}.mp3`);
+            trackEntity.savePath = savePath + fisher.utils.clearPath(`${name}`);
             playlistEntity.tracks.push(trackEntity);
         });
 
