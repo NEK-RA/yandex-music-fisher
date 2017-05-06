@@ -104,13 +104,13 @@ downloader.download = async () => {
         if ('title' in entity) {
             writer.setFrame('TIT2', entity.title);
         }
-        if (artists.artists.length) {
+        if (artists.artists.length > 0) {
             writer.setFrame('TPE1', artists.artists);
         }
         if ('durationMs' in entity.track) {
             writer.setFrame('TLEN', entity.track.durationMs);
         }
-        if (artists.composers.length) {
+        if (artists.composers.length > 0) {
             writer.setFrame('TCOM', artists.composers);
         }
         if ('lyrics' in entity && typeof entity.lyrics === 'string') {
