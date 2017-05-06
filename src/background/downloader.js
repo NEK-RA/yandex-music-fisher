@@ -153,7 +153,8 @@ downloader.download = async () => {
     }
 
     if (entity.type === downloader.TYPE.TRACK) {
-        if (entity.track.albums.length) { // у треков из яндекс.диска может не быть альбома
+        if ('albums' in entity.track && entity.track.albums.length > 0) {
+            // у треков из яндекс.диска может не быть альбома
             trackAlbum = entity.track.albums[0];
         }
         if (trackAlbum && 'coverUri' in trackAlbum) {
