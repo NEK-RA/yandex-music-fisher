@@ -48,19 +48,16 @@ export default class Yandex {
 
     getArtist(artistId) {
         const url = `${this.baseUrl}/handlers/artist.jsx?artist=${artistId}&what=`;
-        let artist;
-
-        return fetch(`${url}albums`, options)
-            .then(parseJsonResponse)
-            .then((json) => {
-                artist = json;
-                return fetch(`${url}tracks`, options);
-            })
-            .then(parseJsonResponse)
-            .then((json) => {
-                artist.tracks = json.tracks;
-                return artist;
-            });
+        return Promise.all([
+            fetch(`${url}albums`, options),
+            fetch(`${url}tracks`, options)
+        ]).then(res => Promise.all([
+            parseJsonResponse(res[0]),
+            parseJsonResponse(res[1])
+        ])).then(res => {
+            res[0].tracks = res[1].tracks;
+            return res[0];
+        });
     }
 
     getAlbum(albumId) {
