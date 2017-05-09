@@ -85,17 +85,11 @@ texts.forEach(text => {
 
 $('btnReset').addEventListener('click', () => {
     background.fisher.storage.reset();
-    loadOptions();
+    loadOptions(background);
 });
 
-function getBackgroundPage() {
-    return new Promise(resolve => {
-        chrome.runtime.getBackgroundPage(resolve);
-    });
-}
-
-async function loadOptions() {
-    background = await getBackgroundPage();
+function loadOptions(backgroundPage) {
+    background = backgroundPage;
 
     checkboxes.forEach(checkbox => {
         $(checkbox).checked = background.fisher.storage.getItem(checkbox);
@@ -111,4 +105,4 @@ async function loadOptions() {
     });
 }
 
-loadOptions();
+chrome.runtime.getBackgroundPage(loadOptions);
