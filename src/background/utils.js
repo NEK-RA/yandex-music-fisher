@@ -1,6 +1,6 @@
 /* global fisher */
 
-import qs from 'querystring';
+import qs from 'querystring'; // use URLSerachParams when it comes to Edge
 
 export function fetchBuffer(url, onProgress) {
     return new Promise((resolve, reject) => {
@@ -73,7 +73,7 @@ export function clearPath(path, isDir = false) {
     p = p.replace(unsafeChars, '');
     p = p.replace(/[\\/:*?<>|~]/g, '_'); // запрещённые символы в винде
     if (isDir) {
-        p = p.replace(/(\.| )$/, '_'); // точка или пробел в конце
+        p = p.replace(/([. ])$/, '_'); // точка или пробел в конце
         // пример папки с точкой в конце https://music.yandex.ru/album/1288439/
         // пример папки с пробелом в конце https://music.yandex.ru/album/62046/
     }
@@ -87,7 +87,7 @@ export function parseArtists(allArtists) {
 
     let artists = [];
 
-    allArtists.forEach((artist) => {
+    allArtists.forEach(artist => {
         if (artist.composer) { // пример https://music.yandex.ru/album/717747/track/6672611
             composers.push(artist.name);
         } else if (artist.various) {
@@ -96,8 +96,8 @@ export function parseArtists(allArtists) {
             artists.push(artist.name);
         }
     });
-    if (!artists.length) {
-        if (composers.length) {
+    if (artists.length === 0) {
+        if (composers.length > 0) {
             artists = composers;
         } else {
             artists = [UA];
@@ -185,7 +185,7 @@ export function getActiveTab() {
             active: true,
             currentWindow: true
         }, (tabs) => {
-            if (tabs.length) {
+            if (tabs.length > 0) {
                 resolve(tabs[0]);
             } else {
                 reject(new Error('No active tab'));
@@ -198,6 +198,6 @@ export function updateBadge() {
     const count = window.fisher.downloader.getDownloadCount();
 
     chrome.browserAction.setBadgeText({
-        text: (count) ? count.toString() : ''
+        text: (count > 0) ? count.toString() : ''
     });
 }
