@@ -18,26 +18,18 @@ const selects = [
 const texts = [
     'folder'
 ];
-const backgroundPermission = {
-    permissions: ['background']
-};
 
 let background;
 
-window.addEventListener('error', (e) => {
+window.addEventListener('error', e => {
     background.console.warn(e.error.stack);
     e.returnValue = false;
 });
 
-window.addEventListener('unhandledrejection', (e) => {
+window.addEventListener('unhandledrejection', e => {
     background.console.warn(e.reason);
     e.returnValue = false;
 });
-
-if (PLATFORM_CHROMIUM) {
-    $('backgroundDownload').parentNode.parentNode.parentNode.style.display = '';
-    checkboxes.push('backgroundDownload');
-}
 
 function afterCheckboxChanged(checkbox) { // изменение UI
     const checked = $(checkbox).checked;
@@ -54,33 +46,19 @@ function afterCheckboxChanged(checkbox) { // изменение UI
         } else {
             $('folder').setAttribute('disabled', 'disabled');
         }
-    } else if (checkbox === 'backgroundDownload') {
-        chrome.permissions.contains(backgroundPermission, (contains) => {
-            if (contains && !checked) { // btnReset
-                chrome.permissions.remove(backgroundPermission);
-            }
-        });
     }
 }
 
-checkboxes.forEach((checkbox) => {
+checkboxes.forEach(checkbox => {
     $(checkbox).addEventListener('click', () => {
         const checked = $(checkbox).checked;
 
         background.fisher.storage.setItem(checkbox, checked);
         afterCheckboxChanged(checkbox);
-
-        if (checkbox === 'backgroundDownload') {
-            if (checked) {
-                chrome.permissions.request(backgroundPermission);
-            } else {
-                chrome.permissions.remove(backgroundPermission);
-            }
-        }
     });
 });
 
-selects.forEach((select) => {
+selects.forEach(select => {
     $(select).addEventListener('click', () => {
         let value = $(select).value;
 
@@ -91,7 +69,7 @@ selects.forEach((select) => {
     });
 });
 
-texts.forEach((text) => {
+texts.forEach(text => {
     $(text).addEventListener('input', () => {
         let value = $(text).value;
 
@@ -111,7 +89,7 @@ $('btnReset').addEventListener('click', () => {
 });
 
 function getBackgroundPage() {
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
         chrome.runtime.getBackgroundPage(resolve);
     });
 }
@@ -119,16 +97,16 @@ function getBackgroundPage() {
 async function loadOptions() {
     background = await getBackgroundPage();
 
-    checkboxes.forEach((checkbox) => {
+    checkboxes.forEach(checkbox => {
         $(checkbox).checked = background.fisher.storage.getItem(checkbox);
         afterCheckboxChanged(checkbox);
     });
 
-    selects.forEach((select) => {
+    selects.forEach(select => {
         $(select).value = background.fisher.storage.getItem(select);
     });
 
-    texts.forEach((text) => {
+    texts.forEach(text => {
         $(text).value = background.fisher.storage.getItem(text);
     });
 }
