@@ -40,14 +40,14 @@ function post(postUrl, type, data) {
                 'Content-Length': Buffer.byteLength(data)
             }
         };
-        const request = https.request(options, (res) => {
+        const request = https.request(options, res => {
             let data = '';
 
             if (res.statusCode !== 201) {
                 reject(new Error(`HTTP status: ${res.statusCode}`));
             }
             res.setEncoding('utf8');
-            res.on('data', (chunk) => data += chunk);
+            res.on('data', chunk => data += chunk);
             res.on('end', () => resolve(JSON.parse(data)));
         });
 
@@ -78,7 +78,7 @@ function uploadGithubAsset(platform) {
 }
 
 createGithubRelease()
-    .then((response) => {
+    .then(response => {
         console.log(`GitHub release draft '${pack.version}' was created`);
         uploadUrlTemplate = UriTemplate.parse(response.upload_url);
     })
@@ -88,7 +88,7 @@ createGithubRelease()
     .then(() => console.log('Firefox asset was downloaded'))
     .then(() => uploadGithubAsset('opera'))
     .then(() => console.log('Opera asset was downloaded'))
-    .catch((e) => {
+    .catch(e => {
         console.error(e);
         process.exit(1);
     });

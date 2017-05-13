@@ -3,7 +3,7 @@ const urlParser = require('url');
 const MIN_SIZE = 10;
 const MAX_SIZE = 1000;
 const SIZE_INCREMENT = 5;
-const coverUrl = 'https://avatars.yandex.net/get-music-content/d880c58e.a.2256742-1/';
+const coverUrl = 'https://avatars.yandex.net/get-music-content/49707/0047c21b.a.2910921-4/';
 let chain = Promise.resolve();
 
 function httpsHead(url) {
@@ -14,7 +14,7 @@ function httpsHead(url) {
             hostname: urlDetails.hostname,
             path: urlDetails.path
         };
-        const request = https.request(options, (res) => {
+        const request = https.request(options, res => {
             if (res.statusCode === 200) {
                 resolve();
             } else {
@@ -33,7 +33,7 @@ for (let i = MIN_SIZE; i <= MAX_SIZE; i += SIZE_INCREMENT) {
 
     chain = chain.then(() => httpsHead(coverUrl + size))
         .then(() => console.log(size))
-        .catch((e) => {
+        .catch(e => {
             if (e.message !== 'HTTP bad status') {
                 console.error(size, e.message);
             }
