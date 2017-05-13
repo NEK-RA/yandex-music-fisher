@@ -82,12 +82,12 @@ createGithubRelease()
         console.log(`GitHub release draft '${pack.version}' was created`);
         uploadUrlTemplate = UriTemplate.parse(response.upload_url);
     })
-    .then(() => uploadGithubAsset('chromium'))
-    .then(() => console.log('Chromium asset was downloaded'))
+    .then(() => uploadGithubAsset('chrome'))
+    .then(() => console.log('+ chrome asset'))
     .then(() => uploadGithubAsset('firefox'))
-    .then(() => console.log('Firefox asset was downloaded'))
+    .then(() => console.log('+ firefox asset'))
     .then(() => uploadGithubAsset('opera'))
-    .then(() => console.log('Opera asset was downloaded'))
+    .then(() => console.log('+ opera asset'))
     .catch(e => {
         console.error(e);
         process.exit(1);
