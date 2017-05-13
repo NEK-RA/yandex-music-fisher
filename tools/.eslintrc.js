@@ -11,8 +11,8 @@ module.exports = {
     "globals": {
         "PLATFORM_EDGE": false,
         "PLATFORM_OPERA": false,
+        "PLATFORM_CHROME": false,
         "PLATFORM_FIREFOX": false,
-        "PLATFORM_CHROMIUM": false,
         "browser": false,
         "chrome": true,
     },

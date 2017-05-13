@@ -63,7 +63,7 @@ downloader.download = async () => {
         if (chrome.runtime.lastError) {
             onInterruptEntity(chrome.runtime.lastError.message);
         } else {
-            if (PLATFORM_CHROMIUM) {
+            if (PLATFORM_CHROME) {
                 chrome.downloads.setShelfEnabled(false);
             }
             entity.browserDownloadId = downloadId;
@@ -210,7 +210,7 @@ downloader.download = async () => {
 };
 
 downloader.downloadTrack = (trackId, albumId, folder) => {
-    fisher.yandex.getTrack(trackId, albumId).then((json) => {
+    fisher.yandex.getTrack(trackId, albumId).then(json => {
         const track = json.track;
 
         if ('error' in track) {
@@ -252,7 +252,7 @@ downloader.downloadTrack = (trackId, albumId, folder) => {
 };
 
 downloader.downloadAlbum = (albumId, folder) => {
-    fisher.yandex.getAlbum(albumId).then((album) => {
+    fisher.yandex.getAlbum(albumId).then(album => {
         if (!album.trackCount) {
             return;
         }
@@ -357,11 +357,11 @@ downloader.downloadAlbum = (albumId, folder) => {
 
         downloader.downloads.set(albumEntity.index, albumEntity);
         downloader.runAllThreads();
-    }).catch((e) => console.error(e));
+    }).catch(e => console.error(e));
 };
 
 downloader.downloadPlaylist = (username, playlistId) => {
-    fisher.yandex.getPlaylist(username, playlistId).then((playlist) => {
+    fisher.yandex.getPlaylist(username, playlistId).then(playlist => {
         if (!playlist.trackCount) {
             return;
         }
@@ -423,13 +423,13 @@ downloader.downloadPlaylist = (username, playlistId) => {
 
         downloader.downloads.set(playlistEntity.index, playlistEntity);
         downloader.runAllThreads();
-    }).catch((e) => console.error(e));
+    }).catch(e => console.error(e));
 };
 
 downloader.getWaitingEntity = () => {
     let foundEntity;
 
-    downloader.downloads.forEach((entity) => {
+    downloader.downloads.forEach(entity => {
         if (foundEntity) {
             return;
         }
@@ -461,7 +461,7 @@ downloader.getWaitingEntity = () => {
 downloader.getDownloadCount = () => {
     let count = 0;
 
-    downloader.downloads.forEach((entity) => {
+    downloader.downloads.forEach(entity => {
         const isAlbum = entity.type === downloader.TYPE.ALBUM;
         const isCover = isAlbum && entity.cover;
         const isPlaylist = entity.type === downloader.TYPE.PLAYLIST;
@@ -486,7 +486,7 @@ downloader.getDownloadCount = () => {
 downloader.getEntityByBrowserDownloadId = (browserDownloadId) => {
     let foundEntity;
 
-    downloader.downloads.forEach((entity) => {
+    downloader.downloads.forEach(entity => {
         if (foundEntity) {
             return;
         }

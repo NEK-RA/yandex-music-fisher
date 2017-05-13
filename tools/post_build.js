@@ -4,7 +4,7 @@ const JSZip = require('jszip');
 const manifest = require('../src/manifest.json');
 const pack = require('../package.json');
 
-const platform = process.argv[2]; // chromium, opera, firefox, edge
+const platform = process.argv[2]; // chrome, opera, firefox, edge
 const distFolder = path.join(path.dirname(__dirname), 'dist');
 const platformFolder = path.join(distFolder, platform);
 
@@ -37,7 +37,7 @@ function createManifest() {
             }
         };
     }
-    if (platform === 'chromium') {
+    if (platform === 'chrome') {
         manifest.permissions.push('downloads.shelf');
         manifest.minimum_chrome_version = '55.0';
         manifest.incognito = 'split';

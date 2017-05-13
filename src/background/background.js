@@ -24,7 +24,7 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => { // измене�
     fisher.utils.updateTabIcon(tab);
 });
 
-chrome.tabs.onActivated.addListener((activeInfo) => { // выбор другой вкладки
+chrome.tabs.onActivated.addListener(activeInfo => { // выбор другой вкладки
     chrome.tabs.get(activeInfo.tabId, (tab) => {
         if (chrome.runtime.lastError) {
             console.error(chrome.runtime.lastError.message);
@@ -34,14 +34,14 @@ chrome.tabs.onActivated.addListener((activeInfo) => { // выбор другой
     });
 });
 
-chrome.downloads.onChanged.addListener((delta) => {
+chrome.downloads.onChanged.addListener(delta => {
     const entity = downloader.getEntityByBrowserDownloadId(delta.id);
     if (!entity) { // загрузка не от нашего расширения
         return;
     }
 
     if (!delta.state) { // состояние не изменилось (начало загрузки)
-        if (PLATFORM_CHROMIUM) {
+        if (PLATFORM_CHROME) {
             chrome.downloads.setShelfEnabled(true);
         }
         return;
