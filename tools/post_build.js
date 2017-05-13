@@ -3,14 +3,16 @@ const path = require('path');
 const JSZip = require('jszip');
 const manifest = require('../src/manifest.json');
 const pack = require('../package.json');
+
 const platform = process.argv[2]; // chromium, opera, firefox, edge
-const distFolder = path.join(path.dirname(__dirname), 'dist', platform);
+const distFolder = path.join(path.dirname(__dirname), 'dist');
+const platformFolder = path.join(distFolder, platform);
 
 function readDirSync(dir, filelist) {
     const files = fs.readdirSync(dir);
 
     filelist = filelist || [];
-    files.forEach((file) => {
+    files.forEach(file => {
         const relativePath = dir + file;
 
         if (fs.statSync(relativePath).isDirectory()) {
@@ -36,7 +38,6 @@ function createManifest() {
         };
     }
     if (platform === 'chromium') {
-        manifest.optional_permissions = ['background'];
         manifest.permissions.push('downloads.shelf');
         manifest.minimum_chrome_version = '55.0';
         manifest.incognito = 'split';
@@ -50,16 +51,16 @@ function createManifest() {
         // todo min version?
     }
 
-    fs.writeFileSync(path.join(distFolder, 'manifest.json'), JSON.stringify(manifest));
-    console.log(`manifest.json was written in ${distFolder}`);
+    fs.writeFileSync(path.join(platformFolder, 'manifest.json'), JSON.stringify(manifest));
+    console.log('+ manifest.json');
 }
 
 function createArchive() {
-    const list = readDirSync(`${distFolder}/`);
+    const list = readDirSync(`${platformFolder}/`);
     const zip = new JSZip();
 
-    list.forEach((file) => {
-        zip.file(file.path.replace(`${distFolder}/`, ''), file.data);
+    list.forEach(file => {
+        zip.file(file.path.replace(`${platformFolder}/`, ''), file.data);
     });
 
     zip.generateAsync({
@@ -68,12 +69,11 @@ function createArchive() {
         compressionOptions: {
             level: 9
         }
-    }).then((buffer) => {
+    }).then(buffer => {
         const archiveName = `yandex-music-fisher_${pack.version}_${platform}.zip`;
-
-        fs.writeFileSync(path.join('dist', archiveName), buffer);
-        console.log(`${archiveName} was created`);
-    }).catch((e) => {
+        fs.writeFileSync(path.join(distFolder, archiveName), buffer);
+        console.log(`+ ${archiveName}`);
+    }).catch(e => {
         console.error(e);
         process.exit(1);
     });
