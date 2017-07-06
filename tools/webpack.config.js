@@ -38,7 +38,8 @@ module.exports = function(env) {
                 PLATFORM_OPERA: env.platform === 'opera',
                 PLATFORM_CHROME: env.platform === 'chrome',
                 PLATFORM_FIREFOX: env.platform === 'firefox'
-            })
+            }),
+            new webpack.optimize.ModuleConcatenationPlugin()
         ]
     };
 };
