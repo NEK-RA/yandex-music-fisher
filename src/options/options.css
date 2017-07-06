@@ -1,6 +1,7 @@
 body {
     margin-top: 0;
     margin-left: 35px;
+    width: 400px;
 }
 
 h3 {
@@ -8,7 +9,7 @@ h3 {
 }
 
 select, input[type=text] {
-    width: 114px;
+    width: 160px;
 }
 
 input[type=checkbox] {
