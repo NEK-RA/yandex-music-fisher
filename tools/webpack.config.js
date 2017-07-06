@@ -15,7 +15,7 @@ module.exports = function(env) {
         },
         output: {
             path: path.join(distFolder, 'bundle'),
-            filename: '[name].bundle.js'
+            filename: '[name].js'
         },
         plugins: [
             new CopyWebpackPlugin([{

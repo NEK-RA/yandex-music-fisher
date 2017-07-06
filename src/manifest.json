@@ -14,14 +14,14 @@
   ],
   "background": {
     "scripts": [
-      "bundle/background.bundle.js"
+      "bundle/background.js"
     ],
     "persistent": true
   },
   "content_scripts": [
     {
       "js": [
-        "bundle/content.bundle.js"
+        "bundle/content.js"
       ],
       "matches": [
         "https://music.yandex.ru/*",
