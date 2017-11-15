@@ -11,6 +11,8 @@
 
 [Список изменений](https://github.com/egoroof/yandex-music-fisher/releases)
 
+Благодарности сюда: https://money.yandex.ru/to/410015711366474
+
 ### Установка
 
 - [Интернет-магазин Chrome](https://chrome.google.com/webstore/detail/yandex-music-fisher/gkdpmbjlfgjbnleinnojgpgoljaokbni)
