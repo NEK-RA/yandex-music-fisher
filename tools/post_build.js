@@ -36,17 +36,23 @@ function createManifest() {
                 strict_min_version: '52.0'
             }
         };
+        manifest.options_ui.browser_style = true;
     }
     if (platform === 'chrome') {
         manifest.permissions.push('downloads.shelf');
         manifest.minimum_chrome_version = '55.0';
         manifest.incognito = 'split';
+        manifest.background.persistent = true;
+        manifest.options_ui.chrome_style = true;
     }
     if (platform === 'opera') {
         manifest.minimum_opera_version = '42.0';
         manifest.incognito = 'split';
+        manifest.background.persistent = true;
+        manifest.options_ui.chrome_style = true;
     }
     if (platform === 'edge') {
+        manifest.background.persistent = true;
         manifest.author = 'egoroof';
         // todo min version?
     }
