@@ -69,6 +69,60 @@ h4.albums, h4.compilations {
     text-align: center;
 }
 
+#track-list-container {
+    margin-top: 24px;
+    user-select: none;
+}
+
+#track-list-container > .glyphicon {
+    font-size: 16px;
+    margin-right: 12px;
+    color: hsla(0, 0%, 55%);
+    transition: color 0.15s;
+    cursor: pointer;
+}
+
+#track-list-container > .glyphicon:hover {
+    color: hsla(0, 0%, 0%);
+}
+
+#track-list {
+    max-height: 332px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    list-style: none;
+    white-space: nowrap;
+}
+
+#track-list > li {
+    text-align: left;
+}
+
+#track-list .track-name {
+    display: inline-block;
+    border-bottom: 1.5px solid;
+    border-color: hsl(0, 100%, 100%);
+    font-weight: 500;
+    transition: border-color 0.15s, font-weight 0.15s;
+}
+
+#track-list li:hover .track-name {
+    font-weight: 700;
+    border-color: hsla(208, 68%, 55%);
+}
+
+#track-list .track-info {
+    display: inline-block;
+    margin-left: 0px;
+    color: hsl(0, 0%, 100%);
+    transition: color 0.15s, margin-left 0.15s;
+}
+
+#track-list li:hover .track-info {
+    color: hsl(0, 0%, 70%);
+    margin-left: 8px;
+}
+
 .download-container {
     margin-top: 18px;
 }
