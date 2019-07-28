@@ -8,6 +8,7 @@ const checkboxes = [
     'enumerateAlbums',
     'enumeratePlaylists',
     'singleClickDownload',
+    'dontAskDownload',
     'shouldUseFolder'
 ];
 const selects = [

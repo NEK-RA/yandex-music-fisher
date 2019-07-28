@@ -148,7 +148,8 @@ downloader.download = async () => {
         chrome.downloads.download({
             url: entity.browserDownloadUrl,
             filename: savePath,
-            conflictAction: 'overwrite'
+            conflictAction: 'overwrite',
+            saveAs: !fisher.storage.getItem('dontAskDownload')
         }, onChromeDownloadStart);
     }
 
@@ -204,7 +205,8 @@ downloader.download = async () => {
         chrome.downloads.download({
             url: entity.browserDownloadUrl,
             filename: savePath,
-            conflictAction: 'overwrite'
+            conflictAction: 'overwrite',
+            saveAs: !fisher.storage.getItem('dontAskDownload')
         }, onChromeDownloadStart);
     }
 };

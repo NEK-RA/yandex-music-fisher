@@ -8,6 +8,7 @@ export default class storage {
             enumerateAlbums: true,
             enumeratePlaylists: false,
             singleClickDownload: false,
+            dontAskDownload: false,
             shouldUseFolder: false,
             folder: 'music'
         };
