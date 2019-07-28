@@ -362,7 +362,7 @@ downloader.downloadAlbum = (albumId, folder) => {
     }).catch(e => console.error(e));
 };
 
-downloader.downloadPlaylist = (username, playlistId) => {
+downloader.downloadPlaylist = (username, playlistId, selectedTracks) => {
     fisher.yandex.getPlaylist(username, playlistId).then(playlist => {
         if (!playlist.trackCount) {
             return;
@@ -380,6 +380,9 @@ downloader.downloadPlaylist = (username, playlistId) => {
         playlist.tracks.forEach((track, i) => {
             if ('error' in track) {
                 console.error(`Track error: ${track.error}`, track);
+                return;
+            }
+            if (selectedTracks != null && !selectedTracks.includes(track.id)) {
                 return;
             }
             const trackEntity = {

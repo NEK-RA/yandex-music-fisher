@@ -6,6 +6,7 @@ const $ = document.getElementById.bind(document);
 
 let background;
 let updateIntervalId;
+let selectedTracks = null;
 
 window.addEventListener('error', (e) => {
     background.console.warn(e.error.stack);
@@ -272,7 +273,7 @@ $('startDownloadBtn').addEventListener('click', () => {
             const username = $('startDownloadBtn').getAttribute('data-username');
             const playlistId = $('startDownloadBtn').getAttribute('data-playlistId');
 
-            background.fisher.downloader.downloadPlaylist(username, playlistId);
+            background.fisher.downloader.downloadPlaylist(username, playlistId, selectedTracks);
             break;
         }
         case 'artistOrLabel': {
@@ -560,25 +561,132 @@ function generateDownloadPlaylist(playlist) {
         background.console.info(`Empty playlist: ${playlist.owner.login}#${playlist.kind}`);
         return;
     }
-    let duration = 0;
+    let totalDuration = 0;
+    let selectedDuration = 0;
+    const trackById = {};
+    let trackListHTML = '';
+    selectedTracks = [];
 
     playlist.tracks.forEach((track) => {
         if ('error' in track) {
             return;
         }
-        duration += track.durationMs / 1000;
+        trackById[track.id] = track;
+        const trackDuration = track.durationMs / 1000;
+        totalDuration += trackDuration;
+        selectedTracks.push(track.id);
+
+        const minSize = background.fisher.downloader.minBitrate * trackDuration;
+        const maxSize = background.fisher.downloader.maxBitrate * trackDuration;
+        const minSizeStr = background.fisher.utils.bytesToStr(minSize);
+        const maxSizeStr = background.fisher.utils.bytesToStr(maxSize);
+        const durationStr = background.fisher.utils.durationToStr(trackDuration);
+
+        const artists = background.fisher.utils.parseArtists(track.artists).artists.join(', ');
+        const name = `${artists} - ${track.title}`;
+        trackListHTML += `<li class="checkbox" title="${name}, ${minSizeStr} - ${maxSizeStr}, ${durationStr}">`;
+        trackListHTML += '    <label>';
+        trackListHTML += `        <input type="checkbox" checked data-track-id="${track.id}" />`;
+        trackListHTML += `        <span class="track-name">${name}</span>`;
+        trackListHTML += `        <span class="track-info">${minSizeStr} - ${maxSizeStr}</span>`;
+        trackListHTML += `        <span class="track-info">${durationStr}</span>`;
+        trackListHTML += '    </label>';
+        trackListHTML += '</li>';
+    });
+    selectedDuration = totalDuration;
+    $('track-list').innerHTML = trackListHTML;
+    $('track-list-container').classList.remove('hidden');
+    $('selectAllTracks').addEventListener('click', () => {
+        checkboxes.forEach((checkbox) => {
+            if (!checkbox.checked) {
+                const click = new MouseEvent('click');
+                checkbox.dispatchEvent(click);
+            } 
+        });
+    });
+    $('deselectAllTracks').addEventListener('click', () => {
+        checkboxes.forEach((checkbox) => {
+            if (checkbox.checked) {
+                const click = new MouseEvent('click');
+                checkbox.dispatchEvent(click);
+            } 
+        });
+    });
+    $('invertTrackSelection').addEventListener('click', () => {
+        checkboxes.forEach((checkbox) => {
+            const click = new MouseEvent('click');
+            checkbox.dispatchEvent(click);
+        });
     });
 
-    const minSize = background.fisher.downloader.minBitrate * duration;
-    const maxSize = background.fisher.downloader.maxBitrate * duration;
-    const minSizeStr = background.fisher.utils.bytesToStr(minSize);
-    const maxSizeStr = background.fisher.utils.bytesToStr(maxSize);
-    const durationStr = background.fisher.utils.durationToStr(duration);
-    const trackCountBadge = `<span class="badge">${playlist.trackCount}</span>`;
-    const sizeBadge = `<span class="badge">${minSizeStr} - ${maxSizeStr}</span>`;
-    const durationBadge = `<span class="badge">${durationStr}</span>`;
+    const updateDownloadInfo = (totalDuration, selectedDuration, selectedTracks) => {
+        const totalMinSize = background.fisher.downloader.minBitrate * totalDuration;
+        const totalMaxSize = background.fisher.downloader.maxBitrate * totalDuration;
+        const totalMinSizeStr = background.fisher.utils.bytesToStr(totalMinSize);
+        const totalMaxSizeStr = background.fisher.utils.bytesToStr(totalMaxSize);
+        const totalDurationStr = background.fisher.utils.durationToStr(totalDuration);
 
-    $('info').innerHTML = `${trackCountBadge} ${sizeBadge} ${durationBadge}`;
+        let trackCountBadge;
+        let durationBadge;
+        let sizeBadge;
+        if (selectedTracks.length == playlist.trackCount) {
+            trackCountBadge = `<span class="badge">${playlist.trackCount}</span>`;
+            durationBadge = `<span class="badge">${totalDurationStr}</span>`;
+            sizeBadge = `<span class="badge">${totalMinSizeStr} - ${totalMaxSizeStr}</span>`;
+        } else {
+            const selectedMinSize = background.fisher.downloader.minBitrate * selectedDuration;
+            const selectedMaxSize = background.fisher.downloader.maxBitrate * selectedDuration;
+            const selectedMinSizeStr = background.fisher.utils.bytesToStr(selectedMinSize);
+            const selectedMaxSizeStr = background.fisher.utils.bytesToStr(selectedMaxSize);
+            const selectedDurationStr = background.fisher.utils.durationToStr(selectedDuration);
+            trackCountBadge = `<span class="badge">${selectedTracks.length} / ${playlist.trackCount}</span>`;
+            durationBadge = `<span class="badge">${selectedDurationStr} / ${totalDurationStr}</span>`;
+            sizeBadge = `<span class="badge">${selectedMinSizeStr} - ${selectedMaxSizeStr} / ${totalMinSizeStr} - ${totalMaxSizeStr}</span>`;
+        }
+
+        $('info').innerHTML = `${trackCountBadge} ${sizeBadge} ${durationBadge}`;
+    };
+    updateDownloadInfo(totalDuration, selectedDuration, selectedTracks);
+    
+    let lastChangedCheckboxIdx = null;
+    const checkboxes = [].slice.call($('track-list').getElementsByTagName('input')); 
+    const onClick = function(event) {
+        const curIdx = checkboxes.indexOf(this);
+        if (event.shiftKey) {
+            const startIdx = Math.min(curIdx, lastChangedCheckboxIdx);
+            const stopIdx = Math.max(curIdx, lastChangedCheckboxIdx);
+            for (let idx = startIdx; idx <= stopIdx; idx++) {
+                if (idx != curIdx && idx != lastChangedCheckboxIdx) {
+                    checkboxes[idx].checked = checkboxes[curIdx].checked;
+                    const sign = checkboxes[idx].checked ? 1 : -1;
+                    const trackId = checkboxes[idx].getAttribute('data-track-id');
+                    selectedDuration += sign * trackById[trackId].durationMs / 1000;
+                    if (checkboxes[idx].checked) {
+                        selectedTracks.push(trackId);
+                    } else {
+                        const pos = checkboxes.indexOf(trackId);
+                        selectedTracks.splice(pos, 1);
+                    }
+                }
+            }
+        }
+
+        const sign = checkboxes[curIdx].checked ? 1 : -1;
+        const trackId = checkboxes[curIdx].getAttribute('data-track-id');
+        selectedDuration += sign * trackById[trackId].durationMs / 1000;
+        if (checkboxes[curIdx].checked) {
+            selectedTracks.push(trackId);
+        } else {
+            const pos = checkboxes.indexOf(trackId);
+            selectedTracks.splice(pos, 1);
+        }
+
+        lastChangedCheckboxIdx = curIdx;
+        updateDownloadInfo(totalDuration, selectedDuration, selectedTracks);
+    };
+    for (const checkbox of checkboxes) {
+        checkbox.addEventListener('click', onClick);
+    }
 }
 
 function onAjaxFail(error) {
