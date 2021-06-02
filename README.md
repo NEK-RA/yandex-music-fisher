@@ -11,8 +11,6 @@
 
 [Список изменений](https://github.com/egoroof/yandex-music-fisher/releases)
 
-Благодарности сюда: https://money.yandex.ru/to/410015711366474
-
 ### Установка
 
 - [Интернет-магазин Chrome](https://chrome.google.com/webstore/detail/yandex-music-fisher/gkdpmbjlfgjbnleinnojgpgoljaokbni)
@@ -52,11 +50,6 @@
 [Условия использования сервиса Яндекс.Радио](https://yandex.ru/legal/radio_termsofuse/).
 Если не согласны с Условиями, вы не вправе использовать сервис Яндекс.Музыка / Яндекс.Радио.
 Разработчики Расширения не несут ответственность за нарушения Условий, поэтому используйте Расширение на свой страх и риск.
-
-### Зеркала
-
-- [GitHub](https://github.com/egoroof/yandex-music-fisher)
-- [Bitbucket](https://bitbucket.org/egoroof/yandex-music-fisher)
 
 ### Сборка расширения
 
